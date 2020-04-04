@@ -1,9 +1,17 @@
 version: '3.7'
 
 services:
+  nginx:
+    build:
+      context: ../
+      dockerfile: ./docker/nginx.Dockerfile
+    depends_on:
+      - app
+    ports:
+      - 80:80  # should be 1337:80, but then reverse proxy for swagger.json needed
   app:
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
-    ports:
-      - 5000:5000
+    expose:
+      - 5000
