@@ -1,10 +1,18 @@
 import pytest
 
-from factory import create_app
+from factory import initialize_app
 
 
 @pytest.fixture
 def app():
-    app = create_app()
-    return app
+    app = initialize_app()
 
+    yield app
+
+
+@pytest.fixture
+def client(app):
+    app.config['TESTING'] = True
+
+    with app.test_client() as client:
+        yield client
