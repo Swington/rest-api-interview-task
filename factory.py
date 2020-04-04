@@ -1,13 +1,15 @@
 from flask import Flask
+from flask_restful import Api
 
-from services.hello import hello_world
+from services.hello import HelloWorld
 
 
-def create_routing(app: Flask):
-    app.add_url_rule('/', view_func=hello_world)
+def create_routing(api: Api):
+    api.add_resource(HelloWorld, '/')
 
 
 def create_app():
     app = Flask(__name__)
-    create_routing(app)
+    api = Api(app)
+    create_routing(api)
     return app
