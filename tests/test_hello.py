@@ -1,5 +1,5 @@
 def test_hello_world_returns_valid_payload(client):
-    given_url = '/hello'
+    given_url = '/hello/'
     expected_response_status_code = 200
     expected_response_json = {'hello': 'world'}
 

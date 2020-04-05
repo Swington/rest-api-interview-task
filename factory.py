@@ -1,13 +1,11 @@
 from flask import Flask
-from flask_restx import Api, Namespace
+from flask_restx import Api
 
-from services.hello import HelloWorld
+from services.hello import hello_namespace
 
 
 def initialize_app():
     app = Flask(__name__)
     api = Api(app, doc='/swagger/')
-    default_namespace = Namespace('')
-    default_namespace.add_resource(HelloWorld, '/hello')
-    api.add_namespace(default_namespace, path='/')
+    api.add_namespace(hello_namespace)
     return app
