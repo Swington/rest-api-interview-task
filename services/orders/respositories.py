@@ -10,4 +10,8 @@ class OrdersRepository:
 
     @classmethod
     def get(cls, order_uuid: str) -> OrderModel:
-        return OrderModel()
+        return OrderModel(order_uuid, [])
+
+    @classmethod
+    def create(cls, *args, **kwargs) -> OrderModel:
+        return OrderModel(*args, **kwargs)
