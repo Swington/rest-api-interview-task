@@ -3,3 +3,25 @@
 
 # rest-api-interview-task
 Interview task describing creation of REST API
+
+# How to use
+
+1. Run tests
+    In order to run tests, run:
+    ```bash
+    make run-tests
+    ```
+
+    This will, firstly, build test image, and then run app tests with pytest.
+1. Run local development server
+    In order to run local development server, run command:
+    ```bash
+   docker-compose -f ./docker/docker-compose.yml up --build 
+   ```
+   Then just nagivate to [http://localhost/swagger](http://localhost/swagger) to view SwaggerUI docs
+
+# CircleCI integration
+On every push to any branch, CircleCI build is triggered.
+The build executes tests using test docker container.
+
+CircleCI badge for `master` branch build is available to view on top of readme. 
