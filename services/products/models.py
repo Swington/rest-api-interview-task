@@ -1,6 +1,10 @@
-from flask_restx import Model, fields
+from flask_restx import fields
 
-product_api_model = Model('product', {'uuid': fields.String, 'name': fields.String,})
+from services.products.namespaces import products_namespace
+
+product_api_model = products_namespace.model(
+    'product', {'uuid': fields.String, 'name': fields.String,}
+)
 
 
 class ProductModel:
