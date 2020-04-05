@@ -24,5 +24,9 @@ class OrdersResource(Resource):
         return OrdersRepository.get(order_uuid), 200
 
     @orders_namespace.marshal_with(order_api_model)
-    def put(self, order_uuid:str):
+    def put(self, order_uuid: str):
         return OrdersRepository.update(order_uuid, self.api.payload), 200
+
+    @orders_namespace.marshal_with(order_api_model)
+    def delete(self, order_uuid: str):
+        return OrdersRepository.delete(order_uuid), 200

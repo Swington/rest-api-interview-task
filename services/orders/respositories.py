@@ -21,3 +21,9 @@ class OrdersRepository:
         order = cls.get(order_uuid)
         order.update(data)
         return order
+
+    @classmethod
+    def delete(cls, order_uuid: str) -> OrderModel:
+        order = cls.get(order_uuid)
+        order.delete()
+        return order

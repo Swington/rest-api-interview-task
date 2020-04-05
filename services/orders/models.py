@@ -18,3 +18,6 @@ class OrderModel:
     def update(self, data: Dict[str, Any]):
         self.uuid = data['uuid']
         self.products = data['products']
+
+    def delete(self):
+        pass
