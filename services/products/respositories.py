@@ -1,9 +1,9 @@
 from typing import List
 
-from services.products.models import Product
+from services.products.models import ProductModel
 
 
-class ProductRepository:
+class ProductsRepository:
     @classmethod
-    def list(cls) -> List[Product]:
+    def list(cls) -> List[ProductModel]:
         return []
