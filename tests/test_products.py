@@ -1,12 +1,7 @@
-from services.products.models import ProductModel
 from services.products.respositories import ProductsRepository
 
 
-def test_get_products_returns_list_of_products(client, mocker):
-    given_products = [
-        ProductModel('uuid-1', 'test-name-1'),
-        ProductModel('uuid-2', 'test-name-2'),
-    ]
+def test_get_products_returns_list_of_products(client, given_products, mocker):
     mocker.patch.object(ProductsRepository, 'list').return_value = given_products
     given_url = '/products/'
     expected_response_status_code = 200
