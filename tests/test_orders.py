@@ -2,7 +2,7 @@ from services.orders.models import OrderModel
 from services.orders.respositories import OrdersRepository
 
 
-def test_orders_returns_list_of_orders(client, given_products, mocker):
+def test_get_returns_list_of_orders(client, given_products, mocker):
     given_orders = [
         OrderModel('order-uuid-1', given_products,),
         OrderModel('order-uuid-2', given_products,),
@@ -33,7 +33,7 @@ def test_orders_returns_list_of_orders(client, given_products, mocker):
     assert response.json == expected_response_json
 
 
-def test_orders_returns_order_when_order_uuid_given(client, given_products, mocker):
+def test_get_returns_order_when_order_uuid_given(client, given_products, mocker):
     given_order = OrderModel('order-uuid-1', given_products)
     mocker.patch.object(OrdersRepository, 'get').return_value = given_order
     given_order_uuid = 'order-uuid-1'
@@ -53,7 +53,7 @@ def test_orders_returns_order_when_order_uuid_given(client, given_products, mock
     assert response.json == expected_response_json
 
 
-def test_orders_creates_new_order_when_order_uuid_and_name_given(client, given_products, mocker):
+def test_post_creates_and_returns_new_order(client, given_products):
     given_payload = {
         'uuid': 'test-created-uuid',
         'products': [
@@ -77,7 +77,7 @@ def test_orders_creates_new_order_when_order_uuid_and_name_given(client, given_p
     assert response.json == expected_response_json
 
 
-def test_orders_updates_and_returns_order(client, given_products, mocker):
+def test_put_updates_and_returns_order(client, given_products, mocker):
     given_order_uuid = 'order-uuid-1'
     given_order = OrderModel(given_order_uuid, given_products)
     mocker.patch.object(OrdersRepository, 'get').return_value = given_order
