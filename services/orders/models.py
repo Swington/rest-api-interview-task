@@ -21,3 +21,7 @@ class OrderModel:
 
     def delete(self):
         pass
+
+    @classmethod
+    def get(cls, order_uuid):
+        pass

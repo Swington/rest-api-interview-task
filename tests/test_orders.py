@@ -1,3 +1,4 @@
+from services.orders.exceptions import OrderNotFound
 from services.orders.models import OrderModel
 from services.orders.respositories import OrdersRepository
 
@@ -33,7 +34,7 @@ def test_get_returns_list_of_orders(client, given_products, mocker):
     assert response.json == expected_response_json
 
 
-def test_get_returns_order_when_order_uuid_given(client, given_products, mocker):
+def test_get_returns_order_when_order_exists(client, given_products, mocker):
     given_order = OrderModel('order-uuid-1', given_products)
     mocker.patch.object(OrdersRepository, 'get').return_value = given_order
     given_order_uuid = 'order-uuid-1'
@@ -46,6 +47,18 @@ def test_get_returns_order_when_order_uuid_given(client, given_products, mocker)
         ],
         'uuid': 'order-uuid-1',
     }
+
+    response = client.get(given_url)
+
+    assert response.status_code == expected_response_status_code
+    assert response.json == expected_response_json
+
+
+def test_get_returns_not_found_when_order_does_not_exist(client, given_products, mocker):
+    mocker.patch.object(OrdersRepository, 'get').side_effect = OrderNotFound()
+    given_url = f'/orders/fake-order-uuid-1'
+    expected_response_status_code = 404
+    expected_response_json = {}
 
     response = client.get(given_url)
 
@@ -104,6 +117,19 @@ def test_put_updates_and_returns_order(client, given_products, mocker):
     assert response.json == expected_response_json
 
 
+def test_put_returns_not_found_when_order_does_not_exist(client, given_products, mocker):
+    mocker.patch.object(OrdersRepository, 'get').side_effect = OrderNotFound()
+    given_url = f'/orders/fake-order-uuid-1'
+    given_payload = {}
+    expected_response_status_code = 404
+    expected_response_json = {}
+
+    response = client.put(given_url, json=given_payload, content_type='application/json')
+
+    assert response.status_code == expected_response_status_code
+    assert response.json == expected_response_json
+
+
 def test_delete_removes_existing_order(client, given_products, mocker):
     given_order_uuid = 'order-uuid-1'
     given_order = OrderModel(given_order_uuid, given_products)
@@ -122,3 +148,16 @@ def test_delete_removes_existing_order(client, given_products, mocker):
 
     assert response.status_code == expected_response_status_code
     assert response.json == expected_response_json
+
+
+def test_delete_returns_not_found_when_order_does_not_exist(client, given_products, mocker):
+    mocker.patch.object(OrdersRepository, 'get').side_effect = OrderNotFound()
+    given_url = f'/orders/fake-order-uuid-1'
+    expected_response_status_code = 404
+    expected_response_json = {}
+
+    response = client.delete(given_url)
+
+    assert response.status_code == expected_response_status_code
+    assert response.json == expected_response_json
+
