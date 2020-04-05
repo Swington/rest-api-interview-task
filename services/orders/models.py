@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any, Dict
 
 from flask_restx import fields
 
@@ -14,3 +14,7 @@ class OrderModel:
     def __init__(self, uuid: str, products: List[ProductModel]):
         self.uuid = uuid
         self.products = products
+
+    def update(self, data: Dict[str, Any]):
+        self.uuid = data['uuid']
+        self.products = data['products']

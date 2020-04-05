@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict, Any
 
 from services.orders.models import OrderModel
 
@@ -13,5 +13,11 @@ class OrdersRepository:
         return OrderModel(order_uuid, [])
 
     @classmethod
-    def create(cls, *args, **kwargs) -> OrderModel:
-        return OrderModel(*args, **kwargs)
+    def create(cls, data: Dict[str, Any]) -> OrderModel:
+        return OrderModel(**data)
+
+    @classmethod
+    def update(cls, order_uuid: str, data: Dict[str, Any]) -> OrderModel:
+        order = cls.get(order_uuid)
+        order.update(data)
+        return order

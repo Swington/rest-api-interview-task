@@ -54,8 +54,6 @@ def test_orders_returns_order_when_order_uuid_given(client, given_products, mock
 
 
 def test_orders_creates_new_order_when_order_uuid_and_name_given(client, given_products, mocker):
-    given_order = OrderModel('order-uuid-1', given_products)
-    mocker.patch.object(OrdersRepository, 'get').return_value = given_order
     given_payload = {
         'uuid': 'test-created-uuid',
         'products': [
@@ -63,7 +61,7 @@ def test_orders_creates_new_order_when_order_uuid_and_name_given(client, given_p
             {'name': 'test-name-2', 'uuid': 'uuid-2'},
         ],
     }
-    given_url = f'/orders/'
+    given_url = '/orders/'
     expected_response_status_code = 201
     expected_response_json = {
         'products': [
@@ -74,6 +72,33 @@ def test_orders_creates_new_order_when_order_uuid_and_name_given(client, given_p
     }
 
     response = client.post(given_url, json=given_payload, content_type='application/json')
+
+    assert response.status_code == expected_response_status_code
+    assert response.json == expected_response_json
+
+
+def test_orders_updates_and_returns_order(client, given_products, mocker):
+    given_order_uuid = 'order-uuid-1'
+    given_order = OrderModel(given_order_uuid, given_products)
+    mocker.patch.object(OrdersRepository, 'get').return_value = given_order
+    given_payload = {
+        'uuid': 'changed-test-created-uuid',
+        'products': [
+            {'name': 'test-name-1', 'uuid': 'uuid-1'},
+            {'name': 'test-name-2', 'uuid': 'uuid-2'},
+        ],
+    }
+    given_url = f'/orders/{given_order_uuid}'
+    expected_response_status_code = 200
+    expected_response_json = {
+        'products': [
+            {'name': 'test-name-1', 'uuid': 'uuid-1'},
+            {'name': 'test-name-2', 'uuid': 'uuid-2'},
+        ],
+        'uuid': 'changed-test-created-uuid',
+    }
+
+    response = client.put(given_url, json=given_payload, content_type='application/json')
 
     assert response.status_code == expected_response_status_code
     assert response.json == expected_response_json
